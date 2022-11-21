@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Chat from '../views/Chat'
 import Login from '../views/Login'
+import middleware from '../services/middleware'
 
 Vue.use(VueRouter)
 
@@ -9,7 +10,9 @@ const routes = [
     {
         path: '/',
         name: 'Chat',
-        component: Chat
+        component: Chat,
+        beforeEnter: middleware.auth,
+        
     },
     {
         path: '/login',
