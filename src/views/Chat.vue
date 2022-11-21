@@ -12,10 +12,6 @@
                                 <span>FACENS | Sistemas Distribuidos</span>
                                 <p>1767 Messages</p>
                             </div>
-                            <div class="video_cam">
-                                <span><i class="fas fa-video"></i></span>
-                                <span><i class="fas fa-phone"></i></span>
-                            </div>
                         </div>
 
                         <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
@@ -30,22 +26,12 @@
                         </div>
                     </div>
                     <div class="card-body msg_card_body">
-                        <Comment :me="true" />
-                        <Comment :me="true" />
-                        <Comment />
-                        <Comment :me="true" />
-                        <Comment />
-                        <Comment :me="true" />
-                        <Comment />
-                        <Comment :me="true" />
-                        <Comment />
-                        <Comment :me="true" />
-                        <Comment />
+                        <Message v-for="(message, n) in messages" :key="n" :message="message" />
                     </div>
                     <div class="card-footer">
                         <div class="input-group">
-                            <textarea name="" class="form-control type_msg" placeholder="Digite sua mensagem..."></textarea>
-                            <button type="button" class="btn btn-primary ms-1">Enviar</button>
+                            <textarea @keyup.enter="sendMessage()" v-model="text" name="" class="form-control type_msg" placeholder="Digite sua mensagem..."></textarea>
+                            <button @click="sendMessage()" type="button" class="btn btn-primary ms-1">Enviar</button>
                         </div>
                     </div>
                 </div>
@@ -55,13 +41,52 @@
 </template>
 
 <script>
-import Comment from '../components/Comment'
+import Message from '../components/Message'
+import io from "socket.io-client"
 
 export default {
     name: 'Chat',
 
     components: {
-        Comment
+        Message
+    },
+    
+    data() {
+        return {
+            currentUser: "",
+            text: "",
+            messages: [],
+        };
+    },
+
+    methods: {
+        join() {
+            this.socketInstance = io("http://localhost:3000");
+
+            this.socketInstance.on(
+                "message:received", (data) => {
+                    this.messages = this.messages.concat(data);
+                }
+            )
+        },
+
+        sendMessage() {
+            this.addMessage();
+            this.text = "";
+        },
+
+        addMessage() {
+            const message = {
+                text: this.text
+            };
+
+            this.messages = this.messages.concat(message);
+            this.socketInstance.emit('message', message);
+        },
+    },
+
+    created() {
+        this.join()
     }
 }
 </script>

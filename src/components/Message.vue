@@ -1,20 +1,20 @@
 <template>
     <div>
-        <div v-if="me == true" class="d-flex justify-content-end mb-4">
+        <div v-if="message.me == true" class="d-flex justify-content-end mb-4">
             <div class="img_cont_msg">
-                <img src="https://therichpost.com/wp-content/uploads/2020/06/avatar2.png" class="rounded-circle user_img_msg">
+                <img src="https://therichpost.com/wp-content/uploads/2020/06/avatar2.png" class="rounded-pill user_img_msg">
             </div>
             <div class="msg_cotainer">
-                I am looking for your next templates
+                {{ message.text }}
                 <span class="msg_time">9:07 AM, Today</span>
             </div>
         </div>
         <div v-else class="d-flex justify-content-start mb-4">
             <div class="img_cont_msg">
-                <img src="https://therichpost.com/wp-content/uploads/2020/06/avatar2.png" class="rounded-circle user_img_msg">
+                <img src="https://therichpost.com/wp-content/uploads/2020/06/avatar2.png" class="rounded-pill user_img_msg">
             </div>
-            <div class="msg_cotainer">
-                I am looking for your next templates
+            <div class="msg_cotainer px-3">
+                {{ message.text }}
                 <span class="msg_time">9:07 AM, Today</span>
             </div>
         </div>
@@ -23,9 +23,9 @@
 
 <script>
 export default {
-    name: 'Comment',
+    name: 'Message',
 
-    props: ['me'],
+    props: ['message'],
 
     data() {
         return {

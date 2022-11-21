@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Chat from '../views/Chat'
+import Login from '../views/Login'
 
 Vue.use(VueRouter)
 
@@ -9,6 +10,11 @@ const routes = [
         path: '/',
         name: 'Chat',
         component: Chat
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login
     },
 ]
 
