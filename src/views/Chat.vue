@@ -51,7 +51,7 @@ export default {
 
     methods: {
         join() {
-            this.socketInstance = io("https://ubiquitous-twilight-462f6d.netlify.app");
+            this.socketInstance = io("https://f778-2804-14d-90a8-4298-a518-9ea1-d87a-ae83.ngrok.io");
 
             this.socketInstance.on(
                 "message:received", (message) => {
