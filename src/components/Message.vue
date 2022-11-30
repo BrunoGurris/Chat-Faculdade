@@ -5,7 +5,7 @@
                 <img src="https://therichpost.com/wp-content/uploads/2020/06/avatar2.png" class="rounded-pill user_img_msg">
             </div>
             <div class="msg_cotainer">
-                {{ message.text }}
+                {{ message.message }}
                 <span class="msg_time">9:07 AM, Today</span>
             </div>
         </div>
@@ -14,7 +14,7 @@
                 <img src="https://therichpost.com/wp-content/uploads/2020/06/avatar2.png" class="rounded-pill user_img_msg">
             </div>
             <div class="msg_cotainer px-3">
-                {{ message.text }}
+                {{ message.message }}
                 <span class="msg_time">9:07 AM, Today</span>
             </div>
         </div>

@@ -31,7 +31,7 @@
                     </div>
                     <div class="card-footer">
                         <div class="input-group">
-                            <textarea @keyup.enter="sendMessage()" v-model="text" name="" class="form-control type_msg" placeholder="Digite sua mensagem..."></textarea>
+                            <textarea @keyup.enter="sendMessage()" v-model="message" name="" class="form-control type_msg" placeholder="Digite sua mensagem..."></textarea>
                             <button @click="sendMessage()" type="button" class="btn btn-primary ms-1">Enviar</button>
                         </div>
                     </div>
@@ -55,7 +55,7 @@ export default {
     data() {
         return {
             currentUser: "",
-            text: "",
+            message: "",
             messages: [],
         };
     },
@@ -71,14 +71,24 @@ export default {
             )
         },
 
+        async getMessages() {
+            await this.$api.get('/messages')
+            .then((response) => {
+                this.messages = response.data
+            })
+            .catch((error) => {
+                this.$toastr.e(error.response.data.message)
+            })
+        },
+
         sendMessage() {
             this.addMessage();
-            this.text = "";
+            this.message = "";
         },
 
         addMessage() {
             const message = {
-                text: this.text
+                message: this.message
             };
 
             this.messages = this.messages.concat(message);
@@ -100,6 +110,7 @@ export default {
 
     created() {
         this.join()
+        this.getMessages()
     }
 }
 </script>
