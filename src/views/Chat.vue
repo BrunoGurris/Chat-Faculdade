@@ -51,7 +51,7 @@ export default {
 
     methods: {
         join() {
-            this.socketInstance = io("http://localhost:3000");
+            this.socketInstance = io("https://ubiquitous-twilight-462f6d.netlify.app");
 
             this.socketInstance.on(
                 "message:received", (message) => {
