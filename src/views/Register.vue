@@ -7,14 +7,17 @@
                         <img src="@/assets/logo.jpeg" class="img-fluid p-2 rounded"/>
                         <h4 class="mb-5 text-white mt-5">Chat Facens</h4>
                         <div class="form-outline mb-4">
+                            <input v-model="name" type="text" class="form-control" placeholder="Nome" />
+                        </div>
+                        <div class="form-outline mb-4">
                             <input v-model="username" type="text" class="form-control" placeholder="Usuário" />
                         </div>
                         <div class="form-outline mb-4">
-                            <input @keyup.enter="login()" v-model="password" type="password" class="form-control" placeholder="Senha" />
+                            <input @keyup.enter="register()" v-model="password" type="password" class="form-control" placeholder="Senha" />
                         </div>
                         <div class="form-outline mb-4">
-                            <button @click="login()" ref="btnLogin" class="btn btn-success w-75" type="button">Entrar</button>
-                            <button @click="$router.push('/register')" class="btn btn-link w-75 text-white fw-bold mt-4" type="button">Cadastrar</button>
+                            <button @click="register()" ref="btnRegister" class="btn btn-dark w-75" type="button">Cadastrar</button>
+                            <button @click="$router.push('/login')" class="btn btn-link w-75 text-white fw-bold mt-4" type="button">Voltar</button>
                         </div>   
                     </div>
                 </div>
@@ -25,25 +28,27 @@
 
 <script>
 export default {
-    name: 'Login',
+    name: 'Register',
 
     data() {
         return {
+            name: '',
             username: '',
             password: '',
         }
     },
 
     methods: {
-        async login() {
+        async register() {
             const formData = new FormData();
+            formData.append('name', this.name)
             formData.append('username', this.username)
             formData.append('password', this.password)
 
-            this.$refs.btnLogin.innerText = 'Entrando...'
-            this.$refs.btnLogin.disabled = true
+            this.$refs.btnRegister.innerText = 'Cadastrando...'
+            this.$refs.btnRegister.disabled = true
  
-            await this.$api.post('/login', formData)
+            await this.$api.post('/register', formData)
             .then((response) => {
                 localStorage.setItem('_token', response.data.token)
                 this.$toastr.s('Logado com sucesso!')
@@ -51,16 +56,11 @@ export default {
             })
             .catch((error) => {
                 this.$toastr.e(error.response.data.message)
-                this.password = ''
             })
 
-            this.$refs.btnLogin.innerText = 'Entrar'
-            this.$refs.btnLogin.disabled = false
+            this.$refs.btnRegister.innerText = 'Cadastrar'
+            this.$refs.btnRegister.disabled = false
         },
-    },
-
-    created() {
-        localStorage.setItem('_token', '')
     }
 }
 </script>
