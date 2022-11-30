@@ -4,7 +4,7 @@
             <div class="col-10 chat">
                 <div class="card">
                     <div class="card-header msg_head">
-                        <div class="d-flex bd-highlight">
+                        <div class="d-flex bd-highlight w-100">
                             <div class="img_cont">
                                 <img src="https://therichpost.com/wp-content/uploads/2020/06/avatar2.png" class="rounded-circle user_img">
                             </div>
@@ -12,6 +12,7 @@
                                 <span>FACENS | Sistemas Distribuidos</span>
                                 <p>1767 Messages</p>
                             </div>
+                            <button @click="logout()" type="button" class="btn btn-light btn-sm ms-auto px-3 my-3">Sair</button>
                         </div>
 
                         <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
@@ -82,6 +83,18 @@ export default {
 
             this.messages = this.messages.concat(message);
             this.socketInstance.emit('message', message);
+        },
+
+        async logout() {
+            await this.$api.get('/logout')
+            .then(() => {
+                localStorage.setItem('_token', '')
+                this.$toastr.s('Deslogado com sucesso!')
+                window.location.href = "/login"
+            })
+            .catch((error) => {
+                this.$toastr.e(error.response.data.message)
+            })
         },
     },
 
