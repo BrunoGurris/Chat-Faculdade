@@ -31,8 +31,8 @@
                     </div>
                     <div class="card-footer">
                         <div class="input-group">
-                            <textarea @keyup.enter="sendMessage()" v-model="message" name="" class="form-control type_msg" placeholder="Digite sua mensagem..."></textarea>
-                            <button @click="sendMessage()" type="button" class="btn btn-primary ms-1">Enviar</button>
+                            <textarea @keyup.enter="addMessage()" v-model="message" name="" class="form-control type_msg" placeholder="Digite sua mensagem..."></textarea>
+                            <button @click="addMessage()" type="button" class="btn btn-primary ms-1">Enviar</button>
                         </div>
                     </div>
                 </div>
@@ -65,8 +65,9 @@ export default {
             this.socketInstance = io("http://localhost:3000");
 
             this.socketInstance.on(
-                "message:received", (data) => {
-                    this.messages = this.messages.concat(data);
+                "message:received", (message) => {
+                    message.me = !message.me
+                    this.messages = this.messages.concat(message);
                 }
             )
         },
@@ -81,18 +82,19 @@ export default {
             })
         },
 
-        sendMessage() {
-            this.addMessage();
-            this.message = "";
-        },
+        async addMessage() {
+            const formData = new FormData()
+            formData.append('message', this.message)
 
-        addMessage() {
-            const message = {
-                message: this.message
-            };
-
-            this.messages = this.messages.concat(message);
-            this.socketInstance.emit('message', message);
+            await this.$api.post('/messages', formData)
+            .then((response) => {
+                this.messages = this.messages.concat(response.data);
+                this.socketInstance.emit('message', response.data);
+                this.message = ''
+            })
+            .catch((error) => {
+                this.$toastr.e(error.response.data.message)
+            })
         },
 
         async logout() {
