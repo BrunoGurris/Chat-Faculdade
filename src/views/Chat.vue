@@ -6,7 +6,7 @@
                     <div class="card-header msg_head">
                         <div class="d-flex bd-highlight w-100">
                             <div class="img_cont">
-                                <img src="https://therichpost.com/wp-content/uploads/2020/06/avatar2.png" class="rounded-circle user_img">
+                                <img src="@/assets/circle_logo.png" class="rounded-circle user_img">
                             </div>
                             <div class="user_info">
                                 <span>FACENS | Sistemas Distribuidos</span>

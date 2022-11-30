@@ -2,7 +2,7 @@
     <div class="my-5">
         <div v-if="message.me == true" class="d-flex justify-content-end">
             <div class="img_cont_msg">
-                <img src="https://therichpost.com/wp-content/uploads/2020/06/avatar2.png" class="rounded-pill user_img_msg">
+                <img :src="require('@/assets/' + pictures[message.picture])" class="rounded-pill user_img_msg">
             </div>
             <div class="msg_cotainer_send px-3 py-1">
                 <p class="m-0 fw-bold">{{ message.name }}</p>
@@ -12,7 +12,7 @@
         </div>
         <div v-else class="d-flex justify-content-start">
             <div class="img_cont_msg">
-                <img src="https://therichpost.com/wp-content/uploads/2020/06/avatar2.png" class="rounded-pill user_img_msg">
+                <img :src="require('@/assets/' + pictures[message.picture])" class="rounded-pill user_img_msg">
             </div>
             <div class="msg_cotainer px-3 py-1">
                 <p class="m-0 fw-bold">{{ message.name }}</p>
@@ -31,7 +31,15 @@ export default {
 
     data() {
         return {
-
+            pictures: [
+                "user0.png",
+                "user1.png",
+                "user2.png",
+                "user3.png",
+                "user4.png",
+                "user5.png",
+                "user6.png"
+            ]
         }
     },
 
