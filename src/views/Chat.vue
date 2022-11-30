@@ -10,23 +10,12 @@
                             </div>
                             <div class="user_info">
                                 <span>FACENS | Sistemas Distribuidos</span>
-                                <p>1767 Messages</p>
+                                <p>{{ messages.length }} Mensagens</p>
                             </div>
                             <button @click="logout()" type="button" class="btn btn-light btn-sm ms-auto px-3 my-3">Sair</button>
                         </div>
-
-                        <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
-
-                        <div class="action_menu">
-                            <ul>
-                                <li><i class="fas fa-user-circle"></i> View profile</li>
-                                <li><i class="fas fa-users"></i> Add to close friends</li>
-                                <li><i class="fas fa-plus"></i> Add to group</li>
-                                <li><i class="fas fa-ban"></i> Block</li>
-                            </ul>
-                        </div>
                     </div>
-                    <div class="card-body msg_card_body">
+                    <div id="messages_chat" class="card-body msg_card_body">
                         <Message v-for="(message, n) in messages" :key="n" :message="message" />
                     </div>
                     <div class="card-footer">
@@ -76,6 +65,7 @@ export default {
             await this.$api.get('/messages')
             .then((response) => {
                 this.messages = response.data
+                this.scroll()
             })
             .catch((error) => {
                 this.$toastr.e(error.response.data.message)
@@ -88,9 +78,10 @@ export default {
 
             await this.$api.post('/messages', formData)
             .then((response) => {
-                this.messages = this.messages.concat(response.data);
-                this.socketInstance.emit('message', response.data);
+                this.messages = this.messages.concat(response.data)
+                this.socketInstance.emit('message', response.data)
                 this.message = ''
+                this.scroll()
             })
             .catch((error) => {
                 this.$toastr.e(error.response.data.message)
@@ -108,6 +99,13 @@ export default {
                 this.$toastr.e(error.response.data.message)
             })
         },
+
+        scroll() {
+            setTimeout(() => {
+                var objDiv = document.getElementById("messages_chat")
+                objDiv.scrollTop = objDiv.scrollHeight
+            }, 500) 
+        }
     },
 
     created() {
@@ -268,7 +266,7 @@ export default {
 }
 
 .user_info p{
-    font-size: 10px;
+    font-size: 14px;
     color: rgba(255,255,255,0.6);
 }
 
@@ -285,6 +283,7 @@ export default {
 }
 
 .msg_cotainer{
+    max-width: 50%;
     margin-top: auto;
     margin-bottom: auto;
     margin-left: 10px;
@@ -295,6 +294,7 @@ export default {
 }
 
 .msg_cotainer_send{
+    max-width: 50%;
     margin-top: auto;
     margin-bottom: auto;
     margin-right: 10px;
@@ -307,9 +307,9 @@ export default {
 .msg_time{
     position: absolute;
     left: 0;
-    bottom: -15px;
+    bottom: -20px;
     color: rgba(255,255,255,0.5);
-    font-size: 10px;
+    font-size: 14px;
 }
 
 .msg_time_send{
